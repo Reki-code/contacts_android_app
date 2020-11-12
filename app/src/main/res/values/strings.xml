@@ -9,4 +9,6 @@
     <string name="empty_contacts">Empty</string>
     <string name="user_data_preference_file_key" translatable="false">me.rekii.contacts.USERDATA</string>
     <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="avatar">Avatar</string>
 </resources>

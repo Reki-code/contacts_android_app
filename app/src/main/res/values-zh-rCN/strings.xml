@@ -9,4 +9,6 @@
     <string name="search">搜索</string>
     <string name="empty_contacts">通讯录中没有联系人</string>
     <string name="logout">退出登录</string>
+    <string name="save">保存</string>
+    <string name="avatar">头像</string>
 </resources>

@@ -23,7 +23,7 @@ import me.rekii.contacts.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
-    static final String EXTRA_USERNAME = "me.rekii.EXTRA_USERNAME";
+    public static final String EXTRA_USERNAME = "me.rekii.EXTRA_USERNAME";
     private static UserDbHelper dbHelper;
     private ActivityLoginBinding binding;
 

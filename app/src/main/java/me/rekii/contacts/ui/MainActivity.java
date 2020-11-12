@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.List;
 
 import me.rekii.contacts.R;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setupRecycler();
+        setupFab();
 
         Intent intent = getIntent();
         String name = intent.getStringExtra(EXTRA_USERNAME);
@@ -52,12 +56,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void setupFab() {
+        FloatingActionButton fab = viewBinding.addPersonButton;
+        fab.setOnClickListener(view -> {
+            Snackbar snackbar = Snackbar.make(viewBinding.getRoot(), "Here's a Snackbar", Snackbar.LENGTH_LONG);
+            snackbar.setAction("Action", null);
+            snackbar.show();
+
+        });
+    }
+
     private void setupRecycler() {
+        PersonDao personDao = new PersonDao(this);
         RecyclerView recyclerView = viewBinding.recyclerView;
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter<PersonAdapter.PersonViewHolder> mAdapter = new PersonAdapter(new PersonDao(this).getAll());
+        RecyclerView.Adapter<PersonAdapter.PersonViewHolder> mAdapter = new PersonAdapter(personDao.getAll());
         recyclerView.setAdapter(mAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -97,5 +112,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void startAddPersonActivity() {
+        Intent intent = new Intent(this, AddPersonActivity.class);
+        startActivity(intent);
     }
 }
