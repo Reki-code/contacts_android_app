@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">contacts</string>
+    <string name="button">Button</string>
+    <string name="username">Username</string>
+    <string name="login_button">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="search">Search</string>
+    <string name="empty_contacts">Empty</string>
+    <string name="user_data_preference_file_key" translatable="false">me.rekii.contacts.USERDATA</string>
+    <string name="logout">Logout</string>
+</resources>
