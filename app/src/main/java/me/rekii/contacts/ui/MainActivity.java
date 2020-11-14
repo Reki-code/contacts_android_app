@@ -28,6 +28,8 @@ import static me.rekii.contacts.ui.LoginActivity.EXTRA_USERNAME;
 public class MainActivity extends AppCompatActivity {
 
     private me.rekii.contacts.databinding.ActivityMainBinding viewBinding;
+    List<Person> mData;
+    private PersonAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             viewBinding.emptyHint.setText("");
         }
-
     }
 
     private void setupFab() {
@@ -68,12 +69,24 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter<PersonAdapter.PersonViewHolder> mAdapter = new PersonAdapter(personDao.getAll());
+        mData = personDao.getAll();
+        mAdapter = new PersonAdapter(mData);
         recyclerView.setAdapter(mAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        ItemClickSupport.addTo(recyclerView)
+                .setOnItemClickListener((parent, view, position, id) -> {
+                    // display details
+                    startDetailsActivity(mAdapter.getItem(position));
+                })
+                .setOnItemLongClickListener((parent, view, position, id) -> {
+                    Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();
+                    return true;
+                });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,16 +115,22 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         // back to login screen
         startLoginActivity();
+        finish();
     }
 
     private void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void startAddPersonActivity() {
         Intent intent = new Intent(this, AddPersonActivity.class);
+        startActivity(intent);
+    }
+
+    private void startDetailsActivity(Person person) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(getString(R.string.extra_key_person), person);
         startActivity(intent);
     }
 }

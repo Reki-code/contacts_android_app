@@ -64,6 +64,10 @@ public class PersonDao {
         return persons;
     }
 
+    public Person getPersonByName(String name) {
+        return null;
+    }
+
     public boolean insert(Person person) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

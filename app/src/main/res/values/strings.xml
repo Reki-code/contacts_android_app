@@ -13,4 +13,6 @@
     <string name="avatar">Avatar</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
+    <string name="delete">Delete</string>
+    <string name="extra_key_person">EXTRA_PERSON</string>
 </resources>

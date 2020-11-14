@@ -55,6 +55,11 @@ public class PersonAdapter extends ListAdapter<Person, PersonAdapter.PersonViewH
         return mDataset.size();
     }
 
+    @Override
+    protected Person getItem(int position) {
+        return mDataset.get(position);
+    }
+
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
         private View personView;
 

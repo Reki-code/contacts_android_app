@@ -1,10 +1,14 @@
 package me.rekii.contacts.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
+
+import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
-public class Person {
+public class Person implements Parcelable {
     private String name;
     private String phone;
 
@@ -13,8 +17,17 @@ public class Person {
         this.phone = phone;
     }
 
-    private Person() {
-    }
+    public static final Parcelable.Creator<Person> CREATOR = new Creator<Person>() {
+        @Override
+        public Person createFromParcel(Parcel source) {
+            return new Person(source);
+        }
+
+        @Override
+        public Person[] newArray(int size) {
+            return new Person[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -36,6 +49,30 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(name, phone);
+    }
+
+    public Person(Parcel source) {
+        this.name = source.readString();
+        this.phone = source.readString();
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Person {" +
+                "name" + getName() + ", " +
+                "phone" + getPhone() + "｝";
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getName());
+        dest.writeString(getPhone());
     }
 
     public static class PersonEntry implements BaseColumns {
