@@ -11,4 +11,6 @@
     <string name="logout">退出登录</string>
     <string name="save">保存</string>
     <string name="avatar">头像</string>
+    <string name="name">姓名</string>
+    <string name="phone">电话</string>
 </resources>

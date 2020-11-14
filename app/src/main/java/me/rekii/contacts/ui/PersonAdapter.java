@@ -64,8 +64,8 @@ public class PersonAdapter extends ListAdapter<Person, PersonAdapter.PersonViewH
         }
 
         public void bindTo(Person person) {
-            TextView name = personView.findViewById(R.id.person_name);
-            TextView phone = personView.findViewById(R.id.person_phone);
+            TextView name = personView.findViewById(R.id.name);
+            TextView phone = personView.findViewById(R.id.phone);
             name.setText(person.getName());
             phone.setText(person.getPhone());
         }

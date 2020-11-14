@@ -1,5 +1,6 @@
 package me.rekii.contacts.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -61,5 +62,23 @@ public class PersonDao {
         cursor.close();
 
         return persons;
+    }
+
+    public boolean insert(Person person) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Person.PersonEntry.COLUMN_NAME_OWNER, getCurrentUser());
+        values.put(Person.PersonEntry.COLUMN_NAME_NAME, person.getName());
+        values.put(Person.PersonEntry.COLUMN_NAME_PHONE, person.getPhone());
+
+        db.insert(Person.PersonEntry.TABLE_NAME, null, values);
+        return false;
+    }
+
+    private String getCurrentUser() {
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
+        String currUser = preferences.getString(LoginActivity.EXTRA_USERNAME, "");
+        return currUser;
     }
 }

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -59,10 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupFab() {
         FloatingActionButton fab = viewBinding.addPersonButton;
         fab.setOnClickListener(view -> {
-            Snackbar snackbar = Snackbar.make(viewBinding.getRoot(), "Here's a Snackbar", Snackbar.LENGTH_LONG);
-            snackbar.setAction("Action", null);
-            snackbar.show();
-
+            startAddPersonActivity();
         });
     }
 

@@ -11,4 +11,6 @@
     <string name="logout">Logout</string>
     <string name="save">Save</string>
     <string name="avatar">Avatar</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
 </resources>
