@@ -20,6 +20,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private ActivityDetailsBinding viewBinding;
     private PersonDao personDao;
+    private Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void setupContent() {
         Intent intent = getIntent();
-        Person person = intent.getParcelableExtra(getString(R.string.extra_key_person));
+        person = intent.getParcelableExtra(getString(R.string.extra_key_person));
         assert person != null;
         viewBinding.nameText.setText(person.getName());
         viewBinding.phoneText.setText(person.getPhone());
@@ -65,6 +66,10 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void deletePerson() {
-        Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
+        if (personDao.delete(person)) {
+            Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+        }
     }
 }

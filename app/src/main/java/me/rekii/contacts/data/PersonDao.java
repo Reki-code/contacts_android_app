@@ -76,13 +76,21 @@ public class PersonDao {
         values.put(Person.PersonEntry.COLUMN_NAME_NAME, person.getName());
         values.put(Person.PersonEntry.COLUMN_NAME_PHONE, person.getPhone());
 
-        db.insert(Person.PersonEntry.TABLE_NAME, null, values);
-        return false;
+        long row = db.insert(Person.PersonEntry.TABLE_NAME, null, values);
+        return row == 1;
+    }
+
+    public boolean delete(Person person) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String where = Person.PersonEntry.COLUMN_NAME_NAME + "=?";
+        String[] whereArgs = {person.getName()};
+        int row = db.delete(Person.PersonEntry.TABLE_NAME, where, whereArgs);
+        return row == 1;
     }
 
     private String getCurrentUser() {
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
-        String currUser = preferences.getString(LoginActivity.EXTRA_USERNAME, "");
-        return currUser;
+        return preferences.getString(LoginActivity.EXTRA_USERNAME, "");
     }
 }
