@@ -70,10 +70,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void deletePerson() {
-        if (personViewModel.delete(person)) {
-            Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
-        }
+        boolean success = personViewModel.delete(person);
+        Toast.makeText(this, success ? R.string.successful : R.string.failed, Toast.LENGTH_SHORT).show();
     }
 }
