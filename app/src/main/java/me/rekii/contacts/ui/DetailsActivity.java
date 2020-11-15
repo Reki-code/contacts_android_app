@@ -10,16 +10,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
-import me.rekii.contacts.data.PersonDao;
 import me.rekii.contacts.databinding.ActivityDetailsBinding;
+import me.rekii.contacts.view.PersonViewModel;
+import me.rekii.contacts.view.PersonViewModelFactory;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private ActivityDetailsBinding viewBinding;
-    private PersonDao personDao;
+    private PersonViewModel personViewModel;
     private Person person;
 
     @Override
@@ -33,7 +35,10 @@ public class DetailsActivity extends AppCompatActivity {
 
         setupContent();
 
-        personDao = new PersonDao(this);
+        personViewModel = new ViewModelProvider(
+                getViewModelStore()
+                , new PersonViewModelFactory(getApplicationContext()))
+                .get(PersonViewModel.class);
     }
 
     private void setupContent() {
@@ -66,7 +71,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void deletePerson() {
-        if (personDao.delete(person)) {
+        if (personViewModel.delete(person)) {
             Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();

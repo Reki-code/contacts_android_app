@@ -1,5 +1,6 @@
 package me.rekii.contacts.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,29 +11,28 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
 
 public class PersonAdapter extends ListAdapter<Person, PersonAdapter.PersonViewHolder> {
+    public static final String TAG = "PersonAdapter";
     public static final DiffUtil.ItemCallback<Person> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Person>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull Person oldItem, @NonNull Person newItem) {
+                    Log.i(TAG, "areItemsTheSame: ");
                     return oldItem.getName().equals(newItem.getName());
                 }
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Person oldItem, @NonNull Person newItem) {
+                    Log.i(TAG, "areContentsTheSame: ");
                     return oldItem.equals(newItem);
                 }
             };
-    private List<Person> mDataset;
 
-    public PersonAdapter(List<Person> persons) {
+    public PersonAdapter() {
         super(DIFF_CALLBACK);
-        mDataset = persons;
     }
 
     @NonNull
@@ -47,17 +47,11 @@ public class PersonAdapter extends ListAdapter<Person, PersonAdapter.PersonViewH
 
     @Override
     public void onBindViewHolder(@NonNull PersonViewHolder holder, int position) {
-        holder.bindTo(mDataset.get(position));
+        holder.bindTo(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
-    }
-
-    @Override
-    protected Person getItem(int position) {
-        return mDataset.get(position);
+    public Person getPerson(int position) {
+        return getItem(position);
     }
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {

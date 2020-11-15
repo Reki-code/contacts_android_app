@@ -3,6 +3,7 @@ package me.rekii.contacts.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,24 +12,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
-
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
-import me.rekii.contacts.data.PersonDao;
+import me.rekii.contacts.view.PersonViewModel;
+import me.rekii.contacts.view.PersonViewModelFactory;
 
 import static me.rekii.contacts.ui.LoginActivity.EXTRA_USERNAME;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String TAG = "MainActivity";
+
     private me.rekii.contacts.databinding.ActivityMainBinding viewBinding;
-    List<Person> mData;
+    private PersonViewModel personViewModel;
     private PersonAdapter mAdapter;
 
     @Override
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = viewBinding.toolbar;
         setSupportActionBar(toolbar);
 
+        setupViewModel();
         setupRecycler();
         setupFab();
 
@@ -48,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         String name = intent.getStringExtra(EXTRA_USERNAME);
         Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
 
-        List<Person> persons = new PersonDao(this).getAll();
-        if (persons.isEmpty()) {
-            viewBinding.emptyHint.setText(R.string.empty_contacts);
-        } else {
-            viewBinding.emptyHint.setText("");
-        }
+    }
+
+    private void setupViewModel() {
+        personViewModel = new ViewModelProvider(
+                getViewModelStore()
+                , new PersonViewModelFactory(getApplicationContext()))
+                .get(PersonViewModel.class);
     }
 
     private void setupFab() {
@@ -64,13 +69,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRecycler() {
-        PersonDao personDao = new PersonDao(this);
         RecyclerView recyclerView = viewBinding.recyclerView;
-        recyclerView.setHasFixedSize(true);
+        // recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mData = personDao.getAll();
-        mAdapter = new PersonAdapter(mData);
+
+        mAdapter = new PersonAdapter();
+        personViewModel.getPersons().observe(this, list -> {
+            Log.i(TAG, "setupRecycler: update" + list);
+            mAdapter.submitList(null);
+            mAdapter.submitList(list);
+            if (list.isEmpty()) {
+                viewBinding.emptyHint.setText(R.string.empty_contacts);
+            } else {
+                viewBinding.emptyHint.setText("");
+            }
+        });
         recyclerView.setAdapter(mAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
@@ -79,14 +93,13 @@ public class MainActivity extends AppCompatActivity {
         ItemClickSupport.addTo(recyclerView)
                 .setOnItemClickListener((parent, view, position, id) -> {
                     // display details
-                    startDetailsActivity(mAdapter.getItem(position));
+                    startDetailsActivity(mAdapter.getPerson(position));
                 })
                 .setOnItemLongClickListener((parent, view, position, id) -> {
                     Toast.makeText(this, "Long click", Toast.LENGTH_SHORT).show();
                     return true;
                 });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

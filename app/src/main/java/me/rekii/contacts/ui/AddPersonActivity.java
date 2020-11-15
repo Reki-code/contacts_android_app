@@ -9,18 +9,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Objects;
 
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
-import me.rekii.contacts.data.PersonDao;
 import me.rekii.contacts.databinding.ActivityAddPersonBinding;
+import me.rekii.contacts.view.PersonViewModel;
+import me.rekii.contacts.view.PersonViewModelFactory;
 
 public class AddPersonActivity extends AppCompatActivity {
 
     private ActivityAddPersonBinding viewBinding;
-    private PersonDao personDao;
+    private PersonViewModel personViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +34,16 @@ public class AddPersonActivity extends AppCompatActivity {
 
         Toolbar toolbar = viewBinding.toolbarAddPerson;
         setSupportActionBar(toolbar);
-        personDao = new PersonDao(this);
+
+        personViewModel = new ViewModelProvider(
+                getViewModelStore()
+                , new PersonViewModelFactory(getApplicationContext()))
+                .get(PersonViewModel.class);
     }
 
     public void onAvatarButtonClick(View view) {
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,7 +61,7 @@ public class AddPersonActivity extends AppCompatActivity {
     }
 
     private void savePerson() {
-        personDao.insert(new Person(getName(), getPhone()));
+        personViewModel.insert(new Person(getName(), getPhone()));
         Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
     }
 
