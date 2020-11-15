@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,9 +23,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
 import me.rekii.contacts.viewModel.PersonViewModel;
-import me.rekii.contacts.viewModel.PersonViewModelFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private String TAG = "MainActivity";
 
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewModel() {
         personViewModel = new ViewModelProvider(
                 getViewModelStore()
-                , new PersonViewModelFactory(getApplicationContext()))
+                , new PersonViewModel.PersonViewModelFactory(getApplicationContext()))
                 .get(PersonViewModel.class);
     }
 
@@ -101,7 +102,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(this);
+
         return true;
+    }
+
+    // SearchView.OnQueryTextListener
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        personViewModel.getFilter().filter(newText);
+        return false;
     }
 
     @Override

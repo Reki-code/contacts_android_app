@@ -7,7 +7,7 @@
     <string name="password_hint">密码</string>
     <string name="username_hint">用户名</string>
     <string name="search">搜索</string>
-    <string name="empty_contacts">通讯录中没有联系人</string>
+    <string name="empty_contacts">没有找到联系人</string>
     <string name="logout">退出登录</string>
     <string name="save">保存</string>
     <string name="avatar">头像</string>
@@ -20,4 +20,5 @@
     <string name="change_password">修改密码</string>
     <string name="password_incorrect">密码错误</string>
     <string name="successful">成功</string>
+    <string name="failed">失败</string>
 </resources>

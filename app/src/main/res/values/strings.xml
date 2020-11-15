@@ -22,4 +22,5 @@
     <string name="me.rekii.contacts.EXTRA_USERNAME" translatable="false">EXTRA_USERNAME</string>
     <string name="password_incorrect">The password is incorrect</string>
     <string name="successful">Successful</string>
+    <string name="failed">Failed</string>
 </resources>

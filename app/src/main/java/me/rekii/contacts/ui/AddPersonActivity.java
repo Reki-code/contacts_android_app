@@ -17,7 +17,6 @@ import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
 import me.rekii.contacts.databinding.ActivityAddPersonBinding;
 import me.rekii.contacts.viewModel.PersonViewModel;
-import me.rekii.contacts.viewModel.PersonViewModelFactory;
 
 public class AddPersonActivity extends AppCompatActivity {
 
@@ -37,7 +36,7 @@ public class AddPersonActivity extends AppCompatActivity {
 
         personViewModel = new ViewModelProvider(
                 getViewModelStore()
-                , new PersonViewModelFactory(getApplicationContext()))
+                , new PersonViewModel.PersonViewModelFactory(getApplicationContext()))
                 .get(PersonViewModel.class);
     }
 
@@ -61,8 +60,8 @@ public class AddPersonActivity extends AppCompatActivity {
     }
 
     private void savePerson() {
-        personViewModel.insert(new Person(getName(), getPhone()));
-        Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
+        boolean success = personViewModel.insert(new Person(getName(), getPhone()));
+        Toast.makeText(this, success ? R.string.successful : R.string.failed, Toast.LENGTH_SHORT).show();
     }
 
     private String getName() {

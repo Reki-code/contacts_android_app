@@ -16,7 +16,6 @@ import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
 import me.rekii.contacts.databinding.ActivityDetailsBinding;
 import me.rekii.contacts.viewModel.PersonViewModel;
-import me.rekii.contacts.viewModel.PersonViewModelFactory;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -37,7 +36,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         personViewModel = new ViewModelProvider(
                 getViewModelStore()
-                , new PersonViewModelFactory(getApplicationContext()))
+                , new PersonViewModel.PersonViewModelFactory(getApplicationContext()))
                 .get(PersonViewModel.class);
     }
 
