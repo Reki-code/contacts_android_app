@@ -70,7 +70,7 @@ public class PersonDao {
         values.put(Person.PersonEntry.COLUMN_NAME_PHONE, person.getPhone());
 
         long row = db.insert(Person.PersonEntry.TABLE_NAME, null, values);
-        return row == 1;
+        return row != -1;
     }
 
     public boolean delete(Person person) {
