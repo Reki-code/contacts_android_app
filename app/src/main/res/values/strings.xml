@@ -19,7 +19,7 @@
     <string name="new_password">New password</string>
     <string name="delete_user">Delete user</string>
     <string name="change_password">Change password</string>
-    <string name="me.rekii.contacts.EXTRA_USERNAME">EXTRA_USERNAME</string>
+    <string name="me.rekii.contacts.EXTRA_USERNAME" translatable="false">EXTRA_USERNAME</string>
     <string name="password_incorrect">The password is incorrect</string>
     <string name="successful">Successful</string>
 </resources>
