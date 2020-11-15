@@ -2,18 +2,12 @@ package me.rekii.contacts.data;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.rekii.contacts.R;
-import me.rekii.contacts.ui.LoginActivity;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class PersonDao {
     private static PersonDbHelper dbHelper;
@@ -34,8 +28,7 @@ public class PersonDao {
                 Person.PersonEntry.COLUMN_NAME_PHONE
         };
         String selection = Person.PersonEntry.COLUMN_NAME_OWNER + " = ?";
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
-        String currUser = preferences.getString(LoginActivity.EXTRA_USERNAME, "");
+        String currUser = getCurrentUser();
         String[] selectionArgs = {currUser};
 
         String sortOrder = Person.PersonEntry.COLUMN_NAME_NAME + " DESC";
@@ -83,14 +76,21 @@ public class PersonDao {
     public boolean delete(Person person) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String where = Person.PersonEntry.COLUMN_NAME_NAME + "=?";
+        String where = Person.PersonEntry.COLUMN_NAME_NAME + " = ?";
         String[] whereArgs = {person.getName()};
         int row = db.delete(Person.PersonEntry.TABLE_NAME, where, whereArgs);
         return row == 1;
     }
 
+    public void deleteByOwner(String owner) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String where = Person.PersonEntry.COLUMN_NAME_NAME + " = ?";
+        String[] whereArgs = {owner};
+        db.delete(Person.PersonEntry.TABLE_NAME, where, whereArgs);
+    }
+
     private String getCurrentUser() {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
-        return preferences.getString(LoginActivity.EXTRA_USERNAME, "");
+        return User.getCurrUser(context);
     }
 }

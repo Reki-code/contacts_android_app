@@ -14,4 +14,8 @@
     <string name="name">姓名</string>
     <string name="phone">电话</string>
     <string name="delete">删除</string>
+    <string name="old_password">旧密码</string>
+    <string name="new_password">新密码</string>
+    <string name="delete_user">删除用户</string>
+    <string name="change_password">修改密码</string>
 </resources>

@@ -9,6 +9,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/app_bar_logout"
+        android:icon="@drawable/baseline_perm_identity_24"
         android:title="@string/logout"
-        app:showAsAction="collapseActionView" />
+        app:showAsAction="ifRoom" />
 </menu>

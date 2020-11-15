@@ -15,8 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
 import me.rekii.contacts.databinding.ActivityDetailsBinding;
-import me.rekii.contacts.view.PersonViewModel;
-import me.rekii.contacts.view.PersonViewModelFactory;
+import me.rekii.contacts.viewModel.PersonViewModel;
+import me.rekii.contacts.viewModel.PersonViewModelFactory;
 
 public class DetailsActivity extends AppCompatActivity {
 

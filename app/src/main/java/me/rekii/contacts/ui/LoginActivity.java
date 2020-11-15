@@ -2,11 +2,11 @@ package me.rekii.contacts.ui;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,8 +22,8 @@ import me.rekii.contacts.data.UserDbHelper;
 import me.rekii.contacts.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
+    public static final String TAG = "LoginActivity";
 
-    public static final String EXTRA_USERNAME = "me.rekii.EXTRA_USERNAME";
     private static UserDbHelper dbHelper;
     private ActivityLoginBinding binding;
 
@@ -35,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
-        String currUser = preferences.getString(EXTRA_USERNAME, "");
+        String currUser = User.getCurrUser(getApplicationContext());
+        Log.i(TAG, "onCreate: currUser = " + currUser);
 
         if (!currUser.isEmpty()) {
             startMainActivity(currUser);
@@ -57,10 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (validate()) {
             // save username
-            SharedPreferences preferences = getSharedPreferences(getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(EXTRA_USERNAME, getUsername());
-            editor.apply();
+            User.setCurrUser(getApplicationContext(), getUsername());
             Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
             startMainActivity(getUsername());
         } else {
@@ -81,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startMainActivity(String name) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(LoginActivity.EXTRA_USERNAME, getUsername());
+        intent.putExtra(getString(R.string.user_data_preference_file_key), getUsername());
         startActivity(intent);
         finish();
     }

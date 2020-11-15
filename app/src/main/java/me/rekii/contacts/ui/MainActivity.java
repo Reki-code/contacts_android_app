@@ -1,7 +1,6 @@
 package me.rekii.contacts.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,10 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import me.rekii.contacts.R;
 import me.rekii.contacts.data.Person;
-import me.rekii.contacts.view.PersonViewModel;
-import me.rekii.contacts.view.PersonViewModelFactory;
-
-import static me.rekii.contacts.ui.LoginActivity.EXTRA_USERNAME;
+import me.rekii.contacts.viewModel.PersonViewModel;
+import me.rekii.contacts.viewModel.PersonViewModelFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setupFab();
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra(EXTRA_USERNAME);
+        String name = intent.getStringExtra(getString(R.string.user_data_preference_file_key));
         Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
 
     }
@@ -113,27 +110,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.app_bar_search:
                 return true;
             case R.id.app_bar_logout:
-                logout();
+                startProfileActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void logout() {
-        // clear sp
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.user_data_preference_file_key), MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(EXTRA_USERNAME);
-        editor.apply();
-        // back to login screen
-        startLoginActivity();
-        finish();
-    }
-
-    private void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
     }
 
     private void startAddPersonActivity() {
@@ -144,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
     private void startDetailsActivity(Person person) {
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(getString(R.string.extra_key_person), person);
+        startActivity(intent);
+    }
+
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 }

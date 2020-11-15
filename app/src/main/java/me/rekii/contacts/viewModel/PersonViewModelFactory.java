@@ -1,4 +1,4 @@
-package me.rekii.contacts.view;
+package me.rekii.contacts.viewModel;
 
 import android.content.Context;
 
